@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "jsx": "react-native",
+    "baseUrl": ".", // <-- Sửa lại chỗ này
+    "paths": {
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@screens/*": [
+        "src/screens/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
+      "@assets/*": [
+        "src/assets/*"
+      ],
+      "@hooks/*": [
+        "src/hooks/*"
+      ],
+      "@types/*": [
+        "src/types/*"
+      ],
+      "@core/*": [
+        "src/core/*"
+      ],
+      "@providers/*": [
+        "src/providers/*"
+      ],
+      "@services/*": [
+        "src/services/*"
+      ]
+    }
+  }
+}
