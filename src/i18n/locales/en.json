@@ -1,0 +1,25 @@
+{
+    "welcome": "Hello",
+    "description": "Internal App",
+    "login": "Login",
+    "sign_up": "Sign Up",
+    "toggle_theme": "Change theme",
+    "toggle_language": "Change language",
+    "screen": {
+        "home": {
+            "title": "Home",
+            "signin": "Login",
+            "signup": "Sign Up"
+        },
+        "login": {
+            "welcome": "Welcome back.",
+            "email": "Email or staff ID",
+            "password": "Password",
+            "forgot_password": "Forgot password?",
+            "login": "Login"
+        },
+        "settings": {
+            "title": "Settings"
+        }
+    }
+}
