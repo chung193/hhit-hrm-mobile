@@ -83,10 +83,15 @@ function DashboardDrawer() {
                 headerTitle: 'Ăn ca',
                 drawerLabel: 'Ăn ca'
             }} />
-            <Drawer.Screen name="AddMealOrder" component={AddMealOrder} options={{
-                headerTitle: 'Thêm ăn ca',
-                drawerLabel: 'Thêm ăn ca'
-            }} />
+            <Drawer.Screen
+                name="AddMealOrder"
+                component={AddMealOrder} options={{
+                    drawerItemStyle: { display: 'none' },
+                    headerTitle: 'Thêm ăn ca',
+                    drawerLabel: 'Thêm ăn ca'
+                }}
+
+            />
             <Drawer.Screen name="MealRate" component={MealRate} options={{
                 headerTitle: 'Đánh giá bữa ăn',
                 drawerLabel: 'Đánh giá bữa ăn'

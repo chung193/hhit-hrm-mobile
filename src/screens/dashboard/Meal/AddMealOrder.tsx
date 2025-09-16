@@ -8,6 +8,7 @@ import { useGlobalContext } from '@providers/GlobalProvider';
 import { getAllMeal, deleteMultiMeal, updateMeal, mealOrderUser, searchMeal, mealAddOrder, getMealOrderFilter } from '@services/Meal'
 import { profile } from '@services/User';
 import ViewRefreshControl from '@components/background/ViewRefreshControl';
+import { BackButton } from '@components/backButton';
 
 type MealOption = { value: string; label: string };
 
@@ -197,6 +198,9 @@ const AddMealOrder = () => {
 
     return (
         <ViewRefreshControl onRefresh={resetForm}>
+            <BackButton goBack={() => {
+                navigation.goBack()
+            }} />
             {textError.length > 0 && <Text variant="titleSmall" style={{ color: 'red', marginBottom: 6 }}>Đăng ký không thành công cho ngày: </Text>}
             {
                 textError.length > 0 && textError.map((element, idx) => (
