@@ -106,7 +106,7 @@ const Item = ({ item }: any) => {
 };
 
 const styles = StyleSheet.create({
-    card: { backgroundColor: "#f4f4f4", marginHorizontal: 10, marginVertical: 5, padding: 15, borderRadius: 8, elevation: 2 },
+    card: { backgroundColor: "#f4f4f4", marginHorizontal: 10, marginVertical: 5, padding: 15, borderRadius: 8, borderWidth: 0.5, borderColor: "#ddd" },
     row: { flexDirection: "row", alignItems: "center", marginVertical: 4, flexWrap: "wrap" },
     label: { fontWeight: "bold", marginRight: 8, width: 120 },
     iconContainer: { flexDirection: "row", alignItems: "center" },

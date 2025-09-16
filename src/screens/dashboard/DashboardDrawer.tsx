@@ -93,6 +93,7 @@ function DashboardDrawer() {
 
             />
             <Drawer.Screen name="MealRate" component={MealRate} options={{
+                drawerItemStyle: { display: 'none' },
                 headerTitle: 'Đánh giá bữa ăn',
                 drawerLabel: 'Đánh giá bữa ăn'
             }} />

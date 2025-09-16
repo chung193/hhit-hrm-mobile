@@ -11,7 +11,7 @@ import ViewRefreshControl from '@components/background/ViewRefreshControl';
 const HEADER_CELL_WIDTH = 56;
 
 const MealOrder = () => {
-    const navigation = useNavigation();
+    const navigation = useNavigation<{ navigate: (route: 'AddMealOrder' | 'MealRate') => void }>();
     const [orders, setOrders] = React.useState<any[]>([]);
     const [page, setPage] = React.useState<number>(0);
     const [numberOfItemsPerPageList] = React.useState([5, 10, 15]);
@@ -101,6 +101,11 @@ const MealOrder = () => {
             <View style={styles.controlView}>
                 <Button mode="contained-tonal" icon="plus" style={styles.button} onPress={handleAddOrder}>
                     Đăng ký
+                </Button>
+                <Button mode="contained-tonal" icon="star" style={styles.button} onPress={() => {
+                    navigation.navigate('MealRate');
+                }}>
+                    Đánh giá
                 </Button>
                 <Button
                     mode="contained"

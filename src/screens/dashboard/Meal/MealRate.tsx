@@ -5,7 +5,10 @@ import { getAll } from '@services/MealRate';
 import { useGlobalContext } from '@providers/GlobalProvider';
 import Item from './sections/Item';
 import ViewRefreshControl from '@components/background/ViewRefreshControl';
+import { BackButton } from '@components/backButton';
+import { useNavigation } from '@react-navigation/native';
 
+// Kiểu dữ liệu đánh giá
 type RateItem = {
     id: string;
     rate: number; // 1..5
@@ -15,6 +18,7 @@ const MealRate = () => {
     const [rates, setRates] = React.useState<RateItem[]>([]);
     const [filterRate, setFilterRate] = React.useState<null | 1 | 2 | 3 | 4 | 5>(null);
     const { showSnackbar } = useGlobalContext();
+    const navigation = useNavigation<{ navigate: (route: 'AddMealOrder' | 'MealRate') => void }>();
 
     const loadData = React.useCallback(() => {
         getAll()
@@ -60,6 +64,9 @@ const MealRate = () => {
 
     return (
         <ViewRefreshControl onRefresh={loadData}>
+            <BackButton goBack={() => {
+                navigation.navigate('MealOrder')
+            }} />
             <View style={styles.controlView}>
                 <Button mode="contained-tonal" icon="plus" style={styles.button} onPress={handleAddRate}>
                     Thêm đánh giá
