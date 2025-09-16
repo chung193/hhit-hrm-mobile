@@ -199,7 +199,7 @@ const AddMealOrder = () => {
     return (
         <ViewRefreshControl onRefresh={resetForm}>
             <BackButton goBack={() => {
-                navigation.goBack()
+                navigation.navigate('MealOrder')
             }} />
             {textError.length > 0 && <Text variant="titleSmall" style={{ color: 'red', marginBottom: 6 }}>Đăng ký không thành công cho ngày: </Text>}
             {

@@ -14,6 +14,7 @@ module.exports = {
         '@services': './src/services',
         '@core': './src/core',
         '@providers': './src/providers',
+        '@config': './src/config',
       }
     }],
     'react-native-reanimated/plugin'

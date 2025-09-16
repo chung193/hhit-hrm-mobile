@@ -49,7 +49,6 @@ const LoginScreen = ({ navigation }: Props) => {
 
     return (
         <Background>
-            <BackButton goBack={() => navigation.navigate('HomeScreen')} />
             <Logo />
             <Header>{t('screen.login.welcome')}</Header>
 
