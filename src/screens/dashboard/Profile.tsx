@@ -7,6 +7,7 @@ import { profile, updateUser, updateUserAvatar } from '@services/User';
 import { UPLOAD_URL, MAIN_COLOR } from '../../config/app';
 import * as ImagePicker from 'react-native-image-picker';
 import { useGlobalContext } from '@providers/GlobalProvider';
+import { PermissionsAndroid } from 'react-native';
 
 type Asset = {
   uri?: string;
@@ -36,22 +37,66 @@ const ProfileEdit = () => {
     run();
   }, []);
 
-  const handlePickImage = () => {
-    ImagePicker.launchImageLibrary(
-      { mediaType: 'photo', selectionLimit: 1 },
-      (response) => {
-        if (response?.assets && response.assets.length > 0) {
-          const asset: Asset = response.assets[0];
-          if (asset?.uri) {
-            setData((prev: any) => ({
-              ...prev,
-              avatarLocal: asset.uri,     // preview
-              _avatarAsset: asset,        // giữ info để upload
-            }));
-          }
+  async function requestGalleryPermission() {
+    if (Platform.OS !== 'android') return true;
+
+    // Android 13+ cần READ_MEDIA_IMAGES, Android 12- cần READ_EXTERNAL_STORAGE
+    const sdk = Number(Platform.Version);
+    const perm =
+      sdk >= 33
+        ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
+        : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
+
+    const granted = await PermissionsAndroid.request(perm, {
+      title: 'Quyền truy cập ảnh',
+      message: 'Cho phép ứng dụng chọn ảnh từ thư viện.',
+      buttonPositive: 'Cho phép',
+      buttonNegative: 'Từ chối',
+    });
+
+    return granted === PermissionsAndroid.RESULTS.GRANTED;
+  }
+
+  const handlePickImage = async () => {
+    try {
+      if (Platform.OS === 'android') {
+        const ok = await requestGalleryPermission();
+        if (!ok) {
+          showSnackbar?.('Bạn chưa cấp quyền truy cập ảnh', 'warning');
+          return;
         }
       }
-    );
+
+      const res = await ImagePicker.launchImageLibrary({
+        mediaType: 'photo',
+        selectionLimit: 1,
+        quality: 0.9,
+      });
+
+      // user bấm back/huỷ
+      if (res.didCancel) return;
+
+      // lỗi từ lib
+      if (res.errorCode) {
+        console.log('ImagePicker error:', res.errorCode, res.errorMessage);
+        showSnackbar?.('Không mở được thư viện ảnh', 'error');
+        return;
+      }
+
+      const asset = res.assets && res.assets[0];
+      if (asset?.uri) {
+        setData((prev: any) => ({
+          ...prev,
+          avatarLocal: asset.uri,   // preview
+          _avatarAsset: asset,      // giữ để upload
+        }));
+      } else {
+        showSnackbar?.('Không lấy được ảnh đã chọn', 'warning');
+      }
+    } catch (e) {
+      console.log(e);
+      showSnackbar?.('Đã xảy ra lỗi khi chọn ảnh', 'error');
+    }
   };
 
   const handleUploadAvatar = async () => {
@@ -117,7 +162,7 @@ const ProfileEdit = () => {
   return (
     <MainBackground>
       <View style={styles.header}>
-        <TouchableOpacity onPress={handlePickImage}>
+        <TouchableOpacity onPress={handlePickImage} activeOpacity={0.8}>
           <Image
             source={{
               uri: data.avatarLocal
