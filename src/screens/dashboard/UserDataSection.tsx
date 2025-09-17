@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { profile } from '@services/User';
 import { UPLOAD_URL } from '../../config/app';
@@ -19,11 +19,18 @@ const UserDataSection = (props) => {
 
     return (
         <DrawerContentScrollView {...props}>
-            {user && <View style={styles.userInfoSection}>
-                <Image source={{ uri: UPLOAD_URL + '/users/' + user.avatar }} style={styles.avatar} />
-                <Text style={styles.name}>{user.name}</Text>
-                <Text style={styles.code}>{user.code}</Text>
-            </View>}
+            {user && 
+            <TouchableOpacity 
+                onPress={()=>{
+                    props.navigation.navigate("Profile")
+                    }}>
+                <View style={styles.userInfoSection}>
+                    <Image source={{ uri: UPLOAD_URL + '/users/' + user.avatar }} style={styles.avatar} />
+                    <Text style={styles.name}>{user.name}</Text>
+                    <Text style={styles.code}>{user.code}</Text>
+                </View>
+            </TouchableOpacity>
+            }
             <DrawerItemList {...props} />
         </DrawerContentScrollView>
     );

@@ -7,7 +7,7 @@ import AddMealOrder from './Meal/AddMealOrder';
 import MealRate from './Meal/MealRate';
 import { List as Request } from './LeaveOffice';
 import { List as RequestBookingRoom } from './BookingRoom';
-
+import PostDetail from './PostDetail'
 import UserDataSection from './UserDataSection'; // 👈 Thêm dòng này
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -66,6 +66,16 @@ function DashboardDrawer() {
                 headerTitle: 'Trang Chủ',
                 drawerLabel: 'Trang chủ'
             }} />
+
+            <Drawer.Screen
+                name="PostDetail"
+                component={PostDetail} 
+                options={{
+                    drawerItemStyle: { display: 'none' },
+                    headerTitle: 'Chi tiết bài đăng',
+                    drawerLabel: 'Chi tiết bài đăng'
+                }}
+            />
             <Drawer.Screen name="Request" component={Request} options={{
                 headerTitle: 'Nghỉ phép',
                 drawerLabel: 'Nghỉ phép'
@@ -75,7 +85,9 @@ function DashboardDrawer() {
                 headerTitle: 'Đặt lịch phòng họp',
                 drawerLabel: 'Đặt lịch phòng họp'
             }} />
-            <Drawer.Screen name="Profile" component={Profile} options={{
+            <Drawer.Screen name="Profile" component={Profile} 
+            options={{
+                drawerItemStyle: { display: 'none' },
                 headerTitle: 'Trang cá nhân',
                 drawerLabel: 'Trang cá nhân'
             }} />
@@ -90,7 +102,6 @@ function DashboardDrawer() {
                     headerTitle: 'Thêm ăn ca',
                     drawerLabel: 'Thêm ăn ca'
                 }}
-
             />
             <Drawer.Screen name="MealRate" component={MealRate} options={{
                 drawerItemStyle: { display: 'none' },

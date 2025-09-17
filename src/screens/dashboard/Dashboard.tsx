@@ -4,14 +4,14 @@ import { Paragraph } from '@components/paragraph';
 import { Navigation } from '@types';
 import { getAllPost } from '@services/Post'
 import { View } from 'react-native';
-import { Chip, Text } from 'react-native-paper';
+import { Chip, Text, TouchableRipple  } from 'react-native-paper';
 import RenderHtml from 'react-native-render-html';
 
 type Props = {
     navigation: Navigation;
 };
 
-const PostItem = ({ item }) => {
+const PostItem = ({ item , onPress }) => {
     return (
         <View style={{ padding: 15, borderBottomWidth: 0.5, borderBottomColor: '#dfe6e9', marginBottom: 10 }}>
             <View style={{
@@ -33,9 +33,10 @@ const PostItem = ({ item }) => {
                     />
                 )}
             </View>
-            <Text variant="titleMedium" children={item.name} />
+                <TouchableRipple onPress={onPress} rippleColor="rgba(26,25,81,0.12)">
+                    <Text variant="titleMedium" children={item.name} />
+                </TouchableRipple>
             <Text variant="bodyMedium" children={item.summary} />
-            {/* <RenderHtml contentWidth={300} source={{ html: item.content || '' }} /> */}
         </View>
     )
 }
@@ -54,7 +55,10 @@ const DashboardScreen = ({ navigation }: Props) => {
         <MainBackground children={undefined}>
             {posts && posts.map(item => (
                 <React.Fragment key={item.id}>
-                    <PostItem item={item} />
+                    <PostItem 
+                    item={item} 
+                    onPress={() => navigation.navigate('PostDetail', { id: item.id, item })}
+                    />
                 </React.Fragment>
             ))}
         </MainBackground>
