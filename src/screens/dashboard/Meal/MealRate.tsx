@@ -1,59 +1,106 @@
 import * as React from 'react';
-import { StyleSheet, ScrollView, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { getAll } from '@services/MealRate';
 import { useGlobalContext } from '@providers/GlobalProvider';
-import RegMealModal from './RegMealModal';
 import Item from './sections/Item';
+import ViewRefreshControl from '@components/background/ViewRefreshControl';
+import { BackButton } from '@components/backButton';
+import { useNavigation } from '@react-navigation/native';
+
+// Kiểu dữ liệu đánh giá
+type RateItem = {
+    id: string;
+    rate: number; // 1..5
+};
 
 const MealRate = () => {
-    const [rates, setRates] = React.useState([]);
-    const { showLoading, hideLoading, showSnackbar, openModal, closeModal } = useGlobalContext();
+    const [rates, setRates] = React.useState<RateItem[]>([]);
+    const [filterRate, setFilterRate] = React.useState<null | 1 | 2 | 3 | 4 | 5>(null);
+    const { showSnackbar } = useGlobalContext();
+    const navigation = useNavigation<{ navigate: (route: 'AddMealOrder' | 'MealRate') => void }>();
 
-    const loadData = () => {
-        showLoading();
+    const loadData = React.useCallback(() => {
         getAll()
-            .then(res => {
-                setRates(res.data.data.data);
-                console.log(res.data.data.data)
-                hideLoading();
+            .then((res: any) => {
+                // API: res.data.data.data là list
+                const list: RateItem[] = res?.data?.data?.data ?? [];
+                setRates(list);
             })
-            .catch(err => {
-                hideLoading();
-                showSnackbar(err.message, 'error');
-            });
-    };
+            .catch((err: any) => {
+                showSnackbar(err?.message || 'Lỗi tải đánh giá', 'error');
+            })
+            .finally(() => { });
+    }, [showSnackbar]);
 
     React.useEffect(() => {
         loadData();
     }, []);
 
+    // Đếm số lượng từng mức 1..5 từ dữ liệu hiện có
+    const counts = React.useMemo(() => {
+        const c: Record<1 | 2 | 3 | 4 | 5, number> = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+        for (const r of rates) {
+            const k = Math.max(1, Math.min(5, Number(r.rate) || 0)) as 1 | 2 | 3 | 4 | 5;
+            c[k] += 1;
+        }
+        return c;
+    }, [rates]);
 
-    const handleAddOrder = () => {
-        openModal(
-            <RegMealModal />,
-            () => closeModal(),
-            () => console.log('Modal opened')
-        );
+    // List hiển thị sau khi lọc
+    const visibleRates = React.useMemo(() => {
+        if (filterRate == null) return rates;
+        return rates.filter((r) => r.rate === filterRate);
+    }, [rates, filterRate]);
+
+    // Đổi filter; bấm lại cùng nút để bỏ lọc
+    const handleFilter = (value: null | 1 | 2 | 3 | 4 | 5) => {
+        setFilterRate((prev) => (prev === value ? null : value));
+    };
+
+    const handleAddRate = () => {
+        // navigation.navigate('AddMealRate');
     };
 
     return (
-        <ScrollView>
+        <ViewRefreshControl onRefresh={loadData}>
+            <BackButton goBack={() => {
+                navigation.navigate('MealOrder')
+            }} />
             <View style={styles.controlView}>
-                <Button mode="contained-tonal" icon="replay" style={styles.button} onPress={loadData}>Tải lại</Button>
-                <Button mode="contained-tonal" icon="plus" style={styles.button} onPress={handleAddOrder}>Thêm đánh giá</Button>
-                <Button mode="contained-tonal" style={styles.button} onPress={handleAddOrder}>Tất cả</Button>
-                <Button mode="contained-tonal" style={styles.button} onPress={handleAddOrder}>1 sao ()</Button>
-                <Button mode="contained-tonal" style={styles.button} onPress={handleAddOrder}>2 sao ()</Button>
-                <Button mode="contained-tonal" style={styles.button} onPress={handleAddOrder}>3 sao ()</Button>
-                <Button mode="contained-tonal" style={styles.button} onPress={handleAddOrder}>4 sao ()</Button>
-                <Button mode="contained-tonal" style={styles.button} onPress={handleAddOrder}>5 sao ()</Button>
+                <Button mode="contained-tonal" icon="plus" style={styles.button} onPress={handleAddRate}>
+                    Thêm đánh giá
+                </Button>
+
+                {rates.length > 0 && (
+                    <>
+                        <Button
+                            mode={filterRate === null ? 'contained' : 'outlined'}
+                            style={styles.button}
+                            onPress={() => handleFilter(null)}
+                        >
+                            Tất cả ({rates.length})
+                        </Button>
+
+                        {[1, 2, 3, 4, 5].map((n) => (
+                            <Button
+                                key={n}
+                                mode={filterRate === n ? 'contained' : 'outlined'}
+                                style={styles.button}
+                                disabled={counts[n as 1 | 2 | 3 | 4 | 5] === 0}
+                                onPress={() => handleFilter(n as 1 | 2 | 3 | 4 | 5)}
+                            >
+                                {n} sao ({counts[n as 1 | 2 | 3 | 4 | 5]})
+                            </Button>
+                        ))}
+                    </>
+                )}
             </View>
 
-            {rates && rates.map((item) => (
+            {visibleRates.map((item) => (
                 <Item item={item} key={item.id} />
             ))}
-        </ScrollView>
+        </ViewRefreshControl>
     );
 };
 
@@ -62,34 +109,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         marginVertical: 10,
-        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     button: {
         margin: 5,
     },
-    card: {
-        backgroundColor: '#f4f4f4',
-        marginHorizontal: 10,
-        marginVertical: 5,
-        padding: 15,
-        borderRadius: 8,
-        elevation: 2,
-    },
-    row: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginVertical: 4,
-        flexWrap: 'wrap',
-    },
-    label: {
-        fontWeight: 'bold',
-        marginRight: 8,
-        width: 120,
-    },
-    iconContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    }
 });
 
 export default MealRate;

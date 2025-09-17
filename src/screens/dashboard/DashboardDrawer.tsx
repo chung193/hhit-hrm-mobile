@@ -3,6 +3,7 @@ import Profile from './Profile';
 import Configs from './Configs/Configs';
 import DashboardScreen from './Dashboard';
 import MealOrder from './Meal/MealOrder';
+import AddMealOrder from './Meal/AddMealOrder';
 import MealRate from './Meal/MealRate';
 import { List as Request } from './LeaveOffice';
 import { List as RequestBookingRoom } from './BookingRoom';
@@ -82,7 +83,17 @@ function DashboardDrawer() {
                 headerTitle: 'Ăn ca',
                 drawerLabel: 'Ăn ca'
             }} />
+            <Drawer.Screen
+                name="AddMealOrder"
+                component={AddMealOrder} options={{
+                    drawerItemStyle: { display: 'none' },
+                    headerTitle: 'Thêm ăn ca',
+                    drawerLabel: 'Thêm ăn ca'
+                }}
+
+            />
             <Drawer.Screen name="MealRate" component={MealRate} options={{
+                drawerItemStyle: { display: 'none' },
                 headerTitle: 'Đánh giá bữa ăn',
                 drawerLabel: 'Đánh giá bữa ăn'
             }} />
@@ -90,7 +101,7 @@ function DashboardDrawer() {
                 headerTitle: 'Cài đặt',
                 drawerLabel: 'Cài đặt'
             }} />
-            <Drawer.Screen name="ListLeaveOffice" component={List} options={{
+            <Drawer.Screen name="ListLeaveOffice" component={Request} options={{
                 headerTitle: 'Nghỉ phép',
                 drawerLabel: 'Nghỉ phép',
             }} />

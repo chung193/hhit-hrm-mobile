@@ -12,11 +12,14 @@ import { Navigation } from '@types';
 import { login } from '@services/Auth';
 import { saveToken } from '@utils/Storage';
 import { useGlobalContext } from '@providers/GlobalProvider';
+import { useTranslation } from 'react-i18next';
+
 type Props = {
     navigation: Navigation;
 };
 
 const LoginScreen = ({ navigation }: Props) => {
+    const { i18n, t } = useTranslation();
     const [email, setEmail] = useState({ value: 'HHIT0114', error: '' });
     const [password, setPassword] = useState({ value: 'HHIT0114', error: '' });
     const { showLoading, hideLoading, showSnackbar, hideSnackbar } = useGlobalContext();
@@ -46,12 +49,11 @@ const LoginScreen = ({ navigation }: Props) => {
 
     return (
         <Background>
-            <BackButton goBack={() => navigation.navigate('HomeScreen')} />
             <Logo />
-            <Header>Welcome back.</Header>
+            <Header>{t('screen.login.welcome')}</Header>
 
             <TextInput
-                label="Email hoặc mã nhân viên"
+                label={t('screen.login.email')}
                 returnKeyType="next"
                 value={email.value}
                 onChangeText={text => setEmail({ value: text, error: '' })}
@@ -64,7 +66,7 @@ const LoginScreen = ({ navigation }: Props) => {
             />
 
             <TextInput
-                label="Mật khẩu"
+                label={t('screen.login.password')}
                 returnKeyType="done"
                 value={password.value}
                 onChangeText={text => setPassword({ value: text, error: '' })}
@@ -77,20 +79,20 @@ const LoginScreen = ({ navigation }: Props) => {
                 <TouchableOpacity
                     onPress={() => navigation.navigate('ForgotPasswordScreen')}
                 >
-                    <Text style={styles.label}>Forgot your password?</Text>
+                    <Text style={styles.label}>{t('screen.login.forgot_password')}</Text>
                 </TouchableOpacity>
             </View>
 
             <Button mode="contained" onPress={_onLoginPressed}>
-                Login
+                {t('screen.login.login')}
             </Button>
 
-            <View style={styles.row}>
+            {/* <View style={styles.row}>
                 <Text style={styles.label}>Don’t have an account? </Text>
                 <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
                     <Text style={styles.link}>Sign up</Text>
                 </TouchableOpacity>
-            </View>
+            </View> */}
         </Background>
     );
 };

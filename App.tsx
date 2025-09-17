@@ -9,17 +9,20 @@ import { AppThemeProvider } from '@core/ThemeContext';
 import Main from './src';
 import { GlobalProvider, NetworkProvider } from '@providers'
 import './src/i18n';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 function App() {
 
   return (
-    <AppThemeProvider>
-      <GlobalProvider>
-        <NetworkProvider>
-          <Main />
-        </NetworkProvider>
-      </GlobalProvider>
-    </AppThemeProvider>
+    <SafeAreaProvider>
+      <AppThemeProvider>
+        <GlobalProvider>
+          <NetworkProvider>
+            <Main />
+          </NetworkProvider>
+        </GlobalProvider>
+      </AppThemeProvider>
+    </SafeAreaProvider>
   );
 }
 

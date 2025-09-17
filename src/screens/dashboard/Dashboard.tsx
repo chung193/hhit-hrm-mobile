@@ -13,7 +13,7 @@ type Props = {
 
 const PostItem = ({ item }) => {
     return (
-        <View style={{ padding: 5, borderBottomWidth: 1, borderBottomColor: '#34495e', marginBottom: 10 }}>
+        <View style={{ padding: 15, borderBottomWidth: 0.5, borderBottomColor: '#dfe6e9', marginBottom: 10 }}>
             <View style={{
                 marginBottom: 10,
                 flexDirection: 'row',
@@ -21,17 +21,20 @@ const PostItem = ({ item }) => {
                 gap: 6,
             }}>
                 {item.catalogs.map(item =>
-                    <Chip mode='flat'
+                    <Chip
+                        mode='flat'
+                        textStyle={{ color: 'white', fontSize: 12 }}
                         style={{
-                            backgroundColor: '#95a5a6',
-
-                            borderRadius: 15
-                        }}>
-                        {item.name}
-                    </Chip>)}
+                            backgroundColor: '#1A1951',
+                            borderRadius: 15,
+                            padding: 0
+                        }}
+                        children={item.name}
+                    />
+                )}
             </View>
-            <Text variant="titleLarge">{item.name}</Text>
-            <Text variant="bodyLarge">{item.summary}</Text>
+            <Text variant="titleMedium" children={item.name} />
+            <Text variant="bodyMedium" children={item.summary} />
             {/* <RenderHtml contentWidth={300} source={{ html: item.content || '' }} /> */}
         </View>
     )
@@ -48,7 +51,7 @@ const DashboardScreen = ({ navigation }: Props) => {
             })
     }, [])
     return (
-        <MainBackground>
+        <MainBackground children={undefined}>
             {posts && posts.map(item => (
                 <React.Fragment key={item.id}>
                     <PostItem item={item} />

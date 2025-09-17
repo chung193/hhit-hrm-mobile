@@ -1,5 +1,25 @@
 {
-    "hello": "Xin chào",
+    "welcome": "Chào mừng!",
+    "description": "Ứng dụng nội bộ",
+    "login": "Đăng nhập",
+    "sign_up": "Đăng ký",
     "toggle_theme": "Chuyển giao diện",
-    "toggle_language": "Đổi ngôn ngữ"
+    "toggle_language": "Đổi ngôn ngữ",
+    "screen": {
+        "home": {
+            "title": "Trang chủ",
+            "signin": "Đăng nhập",
+            "signup": "Đăng ký"
+        },
+        "login": {
+            "welcome": "Chào mừng",
+            "email": "Email hoặc mã nhên viên",
+            "password": "Mật khẩu",
+            "forgot_password": "Quên mật khẩu?",
+            "login": "Đăng nhập"
+        },
+        "settings": {
+            "title": "Cài đặt"
+        }
+    }
 }
