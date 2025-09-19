@@ -5,8 +5,9 @@ import { QRImage } from '@components/qrcode';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { StyleSheet, ScrollView, View } from 'react-native';
 import { getAllRequest } from '@services/Request'
+import ViewRefreshControl from '@components/background/ViewRefreshControl';
 
-const List = () => {
+const List = (props) => {
     const [requests, setRequest] = useState([])
     const [page, setPage] = useState<number>(0);
     const [numberOfItemsPerPageList] = useState([5, 10, 15]);
@@ -14,7 +15,7 @@ const List = () => {
         numberOfItemsPerPageList[0]
     );
 
-    const { showLoading, hideLoading, showSnackbar, openModal, closeModal } = useGlobalContext();
+    const { showLoading, hideLoading, showSnackbar } = useGlobalContext();
 
     const loadData = () => {
         showLoading()
@@ -43,15 +44,14 @@ const List = () => {
         setPage(0);
     }, [itemsPerPage]);
 
-    const handleAddOrder = () => {
-
+    const handleAdd = () => {
+        props.navigation.navigate('RequestLeaveOffice')
     }
 
     return (
-        <ScrollView>
+        <ViewRefreshControl onRefresh={loadData}>
             <View style={styles.controlView}>
-                <Button mode="contained-tonal" icon="replay" style={styles.button} onPress={() => loadData()}>Tải lại</Button>
-                <Button mode="contained-tonal" icon="plus" style={styles.button} onPress={() => handleAddOrder()}>Đăng ký</Button>
+                <Button mode="contained-tonal" icon="plus" style={styles.button} onPress={() => handleAdd()}>Đăng ký</Button>
                 <Button mode="contained" icon="delete" style={styles.button}>Xóa</Button>
             </View>
 
@@ -109,7 +109,7 @@ const List = () => {
                     selectPageDropdownLabel={'Rows per page'}
                 />
             </DataTable>
-        </ScrollView>
+        </ViewRefreshControl>
     );
 };
 
