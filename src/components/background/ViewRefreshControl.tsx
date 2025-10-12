@@ -5,18 +5,24 @@ type ViewRefreshControlProps = {
     refreshing?: boolean;
     onRefresh?: () => void;
     children?: React.ReactNode;
+    style?: any;
+    contentContainerStyle?: any;
 };
 
 const ViewRefreshControl = ({
     refreshing = false,
     children = null,
     onRefresh = () => { },
+    style,
+    contentContainerStyle,
 }: ViewRefreshControlProps) => {
     return (
         <ScrollView
-            contentContainerStyle={styles.scrollView}
+            style={style}
+            contentContainerStyle={[styles.scrollView, contentContainerStyle]}
+            keyboardShouldPersistTaps="handled"
             refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                <RefreshControl refreshing={!!refreshing} onRefresh={onRefresh} />
             }>
             {children}
         </ScrollView>
@@ -25,7 +31,7 @@ const ViewRefreshControl = ({
 
 const styles = StyleSheet.create({
     scrollView: {
-        padding: 10
+        padding: 10,
     },
 });
 

@@ -22,7 +22,7 @@ const LoginScreen = ({ navigation }: Props) => {
     const { i18n, t } = useTranslation();
     const [email, setEmail] = useState({ value: 'HHIT0114', error: '' });
     const [password, setPassword] = useState({ value: 'HHIT0114', error: '' });
-    const { showLoading, hideLoading, showSnackbar, hideSnackbar } = useGlobalContext();
+    const { showLoading, hideLoading, showSnackbar } = useGlobalContext();
     const _onLoginPressed = () => {
         const codeError = codeValidator(email.value);
         const passwordError = passwordValidator(password.value);
