@@ -4,22 +4,23 @@ import { Paragraph } from '@components/paragraph';
 import { Navigation } from '@types';
 import { getAllPost } from '@services/Post'
 import { View } from 'react-native';
-import { Chip, Text, TouchableRipple  } from 'react-native-paper';
+import { Chip, Text, TouchableRipple } from 'react-native-paper';
 import RenderHtml from 'react-native-render-html';
 
 type Props = {
     navigation: Navigation;
 };
 
-const PostItem = ({ item , onPress }) => {
+const PostItem = ({ item, onPress }) => {
     return (
         <View style={{ padding: 15, borderBottomWidth: 0.5, borderBottomColor: '#dfe6e9', marginBottom: 10 }}>
-            <View style={{
-                marginBottom: 10,
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                gap: 6,
-            }}>
+            <View
+                style={{
+                    marginBottom: 10,
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    gap: 6,
+                }}>
                 {item.catalogs.map(item =>
                     <Chip
                         mode='flat'
@@ -33,9 +34,9 @@ const PostItem = ({ item , onPress }) => {
                     />
                 )}
             </View>
-                <TouchableRipple onPress={onPress} rippleColor="rgba(26,25,81,0.12)">
-                    <Text variant="titleMedium" children={item.name} />
-                </TouchableRipple>
+            <TouchableRipple onPress={onPress} rippleColor="rgba(26,25,81,0.12)">
+                <Text variant="titleMedium" children={item.name} />
+            </TouchableRipple>
             <Text variant="bodyMedium" children={item.summary} />
         </View>
     )
@@ -55,9 +56,10 @@ const DashboardScreen = ({ navigation }: Props) => {
         <MainBackground children={undefined}>
             {posts && posts.map(item => (
                 <React.Fragment key={item.id}>
-                    <PostItem 
-                    item={item} 
-                    onPress={() => navigation.navigate('PostDetail', { id: item.id, item })}
+                    <PostItem
+                        key={item.id}
+                        item={item}
+                        onPress={() => navigation.navigate('PostDetail', { id: item.id, item })}
                     />
                 </React.Fragment>
             ))}
